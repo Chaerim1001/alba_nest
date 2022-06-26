@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Store } from './store.entity';
 
 @Entity()
 export class Owner {
@@ -18,17 +19,11 @@ export class Owner {
   phoneNumber: string;
 
   @Column({ type: 'varchar', nullable: false })
-  storeName: string;
-
-  @Column({ type: 'varchar', nullable: false, unique: true })
-  storeNumber: string;
-
-  @Column({ type: 'varchar', nullable: false })
   name: string;
-
-  @Column({ type: 'varchar', nullable: false })
-  startDate: string;
 
   @Column()
   createdAt: Date;
+
+  @OneToMany(() => Store, (store) => store.storeNumber)
+  store: Store[];
 }

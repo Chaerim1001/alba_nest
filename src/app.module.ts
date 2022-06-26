@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OwnerModule } from './owner/owner.module';
 import { ConfigModule } from '@nestjs/config';
 import { Owner } from './entities/owner.entity';
+import { Store } from './entities/store.entity';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { Owner } from './entities/owner.entity';
       database: process.env.DB_NAME,
       synchronize: false,
       logging: true,
-      entities: [Owner],
+      entities: [Owner, Store],
     }),
     OwnerModule,
   ],
