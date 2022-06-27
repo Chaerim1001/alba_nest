@@ -4,6 +4,9 @@ import { OwnerModule } from './owner/owner.module';
 import { ConfigModule } from '@nestjs/config';
 import { Owner } from './entities/owner.entity';
 import { Store } from './entities/store.entity';
+import { User } from './entities/user.entity';
+import { Experience } from './entities/experience.entity';
+import { Jobpost } from './entities/jobpost.entity';
 
 @Module({
   imports: [
@@ -28,9 +31,9 @@ import { Store } from './entities/store.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      synchronize: false,
+      synchronize: true,
       logging: true,
-      entities: [Owner, Store],
+      entities: [Owner, Store, Experience, Jobpost, User],
       autoLoadEntities: true,
     }),
     OwnerModule,
