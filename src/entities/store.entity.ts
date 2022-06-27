@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-} from 'typeorm';
-import { Owner } from 'src/entities/owner.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Store {
@@ -21,10 +14,6 @@ export class Store {
   @Column({ type: 'varchar', nullable: false })
   startDate: string;
 
-  @Column()
+  @Column({ default: () => 'NOW()' })
   createdAt: Date;
-
-  @ManyToOne(() => Owner, (owner) => owner.store)
-  @JoinColumn({ name: 'owner_id' })
-  owner: Owner;
 }

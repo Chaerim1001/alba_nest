@@ -31,6 +31,7 @@ import { Store } from './entities/store.entity';
       synchronize: false,
       logging: true,
       entities: [Owner, Store],
+      autoLoadEntities: true,
     }),
     OwnerModule,
   ],

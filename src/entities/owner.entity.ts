@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Store } from './store.entity';
 
 @Entity()
@@ -21,9 +27,10 @@ export class Owner {
   @Column({ type: 'varchar', nullable: false })
   name: string;
 
-  @Column()
+  @Column({ default: () => 'NOW()' })
   createdAt: Date;
 
-  @OneToMany(() => Store, (store) => store.storeNumber)
-  store: Store[];
+  @OneToOne(() => Store)
+  @JoinColumn({ name: 'store_id' })
+  store: Store;
 }
