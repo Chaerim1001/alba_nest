@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OwnerModule } from './owner/owner.module';
+
 import { ConfigModule } from '@nestjs/config';
 import { Owner } from './entities/owner.entity';
 import { Store } from './entities/store.entity';
 import { User } from './entities/user.entity';
 import { Experience } from './entities/experience.entity';
 import { Jobpost } from './entities/jobpost.entity';
+import { OwnerModule } from './owner/owner.module';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { Jobpost } from './entities/jobpost.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      synchronize: true,
+      synchronize: false,
       logging: true,
       entities: [Owner, Store, Experience, Jobpost, User],
       autoLoadEntities: true,
