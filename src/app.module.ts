@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
 import { ConfigModule } from '@nestjs/config';
+
 import { Owner } from './entities/owner.entity';
 import { Store } from './entities/store.entity';
 import { User } from './entities/user.entity';
 import { Experience } from './entities/experience.entity';
 import { Jobpost } from './entities/jobpost.entity';
-import { OwnerModule } from './owner/owner.module';
+
+import { OwnerModule } from './modules/owner/owner.module';
+import { JoinModule } from './modules/join/join.module';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { OwnerModule } from './owner/owner.module';
       autoLoadEntities: true,
     }),
     OwnerModule,
+    JoinModule,
   ],
   controllers: [],
   providers: [],

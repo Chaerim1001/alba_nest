@@ -21,4 +21,13 @@ export class OwnerService {
       throw err;
     }
   }
+
+  async addStore(createOwnerDto: CreateOwnerDTO): Promise<void> {
+    try {
+      await this.ownerRepository.save(createOwnerDto);
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
 }
