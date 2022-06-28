@@ -1,6 +1,6 @@
-import { IsString } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 
-export class CreateStoreDTO {
+export class RegisterStoreDTO {
   @IsString()
   readonly storeName: string;
 
@@ -9,4 +9,7 @@ export class CreateStoreDTO {
 
   @IsString()
   readonly startDate: string;
+
+  @IsInt()
+  readonly ownerId: number;
 }
