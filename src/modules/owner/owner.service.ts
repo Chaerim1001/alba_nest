@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateOwnerDTO } from './dto/createOwner.dto';
 import { RegisterStoreDTO } from './dto/registerStore.dto';
 import { Store } from 'src/entities/store.entity';
+import * as Bcrypt from 'bcrypt';
 
 @Injectable()
 export class OwnerService {
@@ -21,7 +22,16 @@ export class OwnerService {
 
   async createOwner(createOwnerDto: CreateOwnerDTO): Promise<void> {
     try {
-      await this.ownerRepository.save(createOwnerDto);
+      const { ownerId, pwd, email, phoneNumber, name } = createOwnerDto;
+      const hashPwd: string = await Bcrypt.hash(pwd, 12);
+
+      await this.ownerRepository.save({
+        ownerId,
+        pwd: hashPwd,
+        email,
+        phoneNumber,
+        name,
+      });
     } catch (err) {
       console.log(err);
       throw err;
