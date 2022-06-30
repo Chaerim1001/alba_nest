@@ -38,6 +38,17 @@ export class OwnerService {
     }
   }
 
+  async getByOwnerId(ownerId: string): Promise<Owner> {
+    try {
+      const owner = await this.ownerRepository.findOne({ ownerId });
+      if (owner) {
+        return owner;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async registerStore(registerStoreDto: RegisterStoreDTO) {
     try {
       const { storeName, storeNumber, startDate, ownerId } = registerStoreDto;

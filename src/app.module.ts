@@ -9,7 +9,7 @@ import { Experience } from './entities/experience.entity';
 import { Jobpost } from './entities/jobpost.entity';
 
 import { OwnerModule } from './modules/owner/owner.module';
-import { JoinModule } from './modules/join/join.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -40,7 +40,7 @@ import { JoinModule } from './modules/join/join.module';
       autoLoadEntities: true,
     }),
     OwnerModule,
-    JoinModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
