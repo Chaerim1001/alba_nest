@@ -1,11 +1,15 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { OwnerService } from '../owner/owner.service';
 import { CreateOwnerDTO } from '../owner/dto/createOwner.dto';
+import { JwtService } from '@nestjs/jwt';
 import * as Bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-  constructor(private ownerService: OwnerService) {}
+  constructor(
+    private ownerService: OwnerService,
+    private jwtService: JwtService,
+  ) {}
 
   createOwner(createOwnerDto: CreateOwnerDTO) {
     this.ownerService.createOwner(createOwnerDto);
@@ -21,6 +25,8 @@ export class AuthService {
       );
     }
     const { pwd, ...result } = owner;
+    const accessToken = await this.jwtService.sign(result);
+    result['token'] = accessToken;
     return result;
   }
 }
