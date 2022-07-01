@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { CreateOwnerDTO } from '../owner/dto/createOwner.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { CreateUserDTO } from '../user/dto/createUser.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -11,6 +12,11 @@ export class AuthController {
   @Post('join/owner')
   createOwner(@Body() createOwnerDto: CreateOwnerDTO) {
     return this.authService.createOwner(createOwnerDto);
+  }
+
+  @Post('join/user')
+  createUser(@Body() createUserDto: CreateUserDTO) {
+    return this.authService.createUser(createUserDto);
   }
 
   @UseGuards(JwtAuthGuard)

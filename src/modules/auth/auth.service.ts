@@ -3,16 +3,23 @@ import { OwnerService } from '../owner/owner.service';
 import { CreateOwnerDTO } from '../owner/dto/createOwner.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as Bcrypt from 'bcrypt';
+import { CreateUserDTO } from '../user/dto/createUser.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private ownerService: OwnerService,
+    private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
   createOwner(createOwnerDto: CreateOwnerDTO) {
     this.ownerService.createOwner(createOwnerDto);
+  }
+
+  createUser(createUserDto: CreateUserDTO) {
+    this.userService.createUser(createUserDto);
   }
 
   async validateOwner(ownerId: string, password: string) {
