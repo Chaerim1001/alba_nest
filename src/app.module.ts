@@ -10,6 +10,7 @@ import { Jobpost } from './entities/jobpost.entity';
 
 import { OwnerModule } from './modules/owner/owner.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     OwnerModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
