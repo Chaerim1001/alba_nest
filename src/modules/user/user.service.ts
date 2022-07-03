@@ -14,6 +14,17 @@ export class UserService {
     this.userRepository = userRepository;
   }
 
+  async getByUserId(userId: string): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+      if (user) {
+        return user;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async createUser(createUserDto: CreateUserDTO): Promise<void> {
     try {
       const { userId, pwd, email, phoneNumber, name, birth } = createUserDto;

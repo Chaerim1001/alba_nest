@@ -27,7 +27,13 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login/owner')
-  async login(@Body() ownerData) {
+  async loginOwner(@Body() ownerData) {
     return ownerData.ownerId;
+  }
+
+  @UseGuards(AuthGuard('local-user'))
+  @Post('login/user')
+  async loginUser(@Body() userData) {
+    return userData.userId;
   }
 }

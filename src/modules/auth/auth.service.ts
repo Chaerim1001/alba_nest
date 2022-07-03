@@ -36,4 +36,19 @@ export class AuthService {
     result['token'] = accessToken;
     return result;
   }
+
+  async validateUser(userId: string, password: string) {
+    const user = await this.userService.getByUserId(userId);
+    const isPasswordMatching = await Bcrypt.compare(password, user.pwd);
+    if (!isPasswordMatching) {
+      throw new HttpException(
+        '잘못된 인증 정보입니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const { pwd, ...result } = user;
+    const accessToken = await this.jwtService.sign(result);
+    result['token'] = accessToken;
+    return result;
+  }
 }
