@@ -8,6 +8,7 @@ import { Store } from 'src/entities/store.entity';
 import * as Bcrypt from 'bcrypt';
 import { CreatePostDTO } from './dto/createPost.dto';
 import { Jobpost } from 'src/entities/jobpost.entity';
+import { UpdatePostDTO } from './dto/updatePost.dto';
 
 @Injectable()
 export class OwnerService {
@@ -84,6 +85,19 @@ export class OwnerService {
         this.postRepository.save({
           store,
           ...createPostDto,
+        });
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+  async updatePost(postId: number, updatePostDto: UpdatePostDTO) {
+    try {
+      const post = await this.postRepository.findOne({ id: postId });
+      if (post !== null) {
+        this.postRepository.update(post, {
+          updatedAt: new Date(),
+          ...updatePostDto,
         });
       }
     } catch (err) {
