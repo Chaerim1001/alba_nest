@@ -6,6 +6,8 @@ import { CreateOwnerDTO } from './dto/createOwner.dto';
 import { RegisterStoreDTO } from './dto/registerStore.dto';
 import { Store } from 'src/entities/store.entity';
 import * as Bcrypt from 'bcrypt';
+import { CreatePostDTO } from './dto/createPost.dto';
+import { Jobpost } from 'src/entities/jobpost.entity';
 
 @Injectable()
 export class OwnerService {
@@ -15,6 +17,9 @@ export class OwnerService {
 
     @InjectRepository(Store)
     private storeRepository: Repository<Store>,
+
+    @InjectRepository(Jobpost)
+    private postRepository: Repository<Jobpost>,
   ) {
     this.ownerRepository = ownerRepository;
     this.storeRepository = storeRepository;
@@ -68,6 +73,20 @@ export class OwnerService {
       }
     } catch (err) {
       console.log(err);
+      throw err;
+    }
+  }
+
+  async createPost(storeId: number, createPostDto: CreatePostDTO) {
+    try {
+      const store = await this.storeRepository.findOne({ id: storeId });
+      if (store !== null) {
+        this.postRepository.save({
+          store,
+          ...createPostDto,
+        });
+      }
+    } catch (err) {
       throw err;
     }
   }
