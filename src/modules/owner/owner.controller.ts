@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { OwnerService } from './owner.service';
 import { RegisterStoreDTO } from './dto/registerStore.dto';
 import { CreatePostDTO } from './dto/createPost.dto';
@@ -18,5 +18,10 @@ export class OwnerController {
     @Body() createPostDto: CreatePostDTO,
   ) {
     return this.ownerService.createPost(storeId, createPostDto);
+  }
+
+  @Delete('post/delete/:postId')
+  deletePost(@Param('postId') postId: number) {
+    return this.ownerService.deletePost(postId);
   }
 }

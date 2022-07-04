@@ -90,4 +90,15 @@ export class OwnerService {
       throw err;
     }
   }
+
+  async deletePost(postId: number) {
+    try {
+      const post = await this.postRepository.findOne({ id: postId });
+      if (post !== null) {
+        this.postRepository.delete(post);
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }
