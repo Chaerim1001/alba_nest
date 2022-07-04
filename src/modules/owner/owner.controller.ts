@@ -26,6 +26,11 @@ export class OwnerController {
     return this.ownerService.getOnePost(postId);
   }
 
+  @Get('postList/:storeId')
+  getPostList(@Param('storeId') storeId: any) {
+    return this.ownerService.getPostList(storeId);
+  }
+
   @Post('post/create/:storeId')
   createPost(
     @Param('storeId') storeId: number,

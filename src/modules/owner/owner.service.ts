@@ -103,6 +103,17 @@ export class OwnerService {
     }
   }
 
+  async getPostList(storeId: any) {
+    try {
+      const posts = await this.postRepository.find({ store: storeId });
+      if (posts !== null) {
+        return posts;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async updatePost(postId: number, updatePostDto: UpdatePostDTO) {
     try {
       const post = await this.postRepository.findOne({ id: postId });
