@@ -3,9 +3,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Store } from './store.entity';
+import { Experience } from './experience.entity';
 
 @Entity()
 export class Jobpost {
@@ -27,4 +29,7 @@ export class Jobpost {
   @ManyToOne(() => Store, (store) => store.jobpostId)
   @JoinColumn({ name: 'storeId' })
   store: Store;
+
+  @OneToMany(() => Experience, (experience) => experience.id)
+  experienceId: Experience[];
 }
