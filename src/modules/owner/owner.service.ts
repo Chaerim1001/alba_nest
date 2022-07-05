@@ -9,6 +9,7 @@ import * as Bcrypt from 'bcrypt';
 import { CreatePostDTO } from './dto/createPost.dto';
 import { Jobpost } from 'src/entities/jobpost.entity';
 import { UpdatePostDTO } from './dto/updatePost.dto';
+import { Experience } from 'src/entities/experience.entity';
 
 @Injectable()
 export class OwnerService {
@@ -20,10 +21,15 @@ export class OwnerService {
     private storeRepository: Repository<Store>,
 
     @InjectRepository(Jobpost)
-    private postRepository: Repository<Jobpost>,
+    private jobpostRepository: Repository<Jobpost>,
+
+    @InjectRepository(Experience)
+    private expRepository: Repository<Experience>,
   ) {
     this.ownerRepository = ownerRepository;
     this.storeRepository = storeRepository;
+    this.jobpostRepository = jobpostRepository;
+    this.expRepository = expRepository;
   }
 
   async createOwner(createOwnerDto: CreateOwnerDTO): Promise<void> {
@@ -82,7 +88,7 @@ export class OwnerService {
     try {
       const store = await this.storeRepository.findOne({ id: storeId });
       if (store !== null) {
-        this.postRepository.save({
+        this.jobpostRepository.save({
           store,
           ...createPostDto,
         });
@@ -94,7 +100,7 @@ export class OwnerService {
 
   async getOnePost(postId: number) {
     try {
-      const post = await this.postRepository.findOne({ id: postId });
+      const post = await this.jobpostRepository.findOne({ id: postId });
       if (post !== null) {
         return post;
       }
@@ -105,7 +111,7 @@ export class OwnerService {
 
   async getPostList(storeId: any) {
     try {
-      const posts = await this.postRepository.find({ store: storeId });
+      const posts = await this.jobpostRepository.find({ store: storeId });
       if (posts !== null) {
         return posts;
       }
@@ -116,9 +122,9 @@ export class OwnerService {
 
   async updatePost(postId: number, updatePostDto: UpdatePostDTO) {
     try {
-      const post = await this.postRepository.findOne({ id: postId });
+      const post = await this.jobpostRepository.findOne({ id: postId });
       if (post !== null) {
-        this.postRepository.update(post, {
+        this.jobpostRepository.update(post, {
           updatedAt: new Date(),
           ...updatePostDto,
         });
@@ -130,10 +136,20 @@ export class OwnerService {
 
   async deletePost(postId: number) {
     try {
-      const post = await this.postRepository.findOne({ id: postId });
+      const post = await this.jobpostRepository.findOne({ id: postId });
       if (post !== null) {
-        this.postRepository.delete(post);
+        this.jobpostRepository.delete(post);
       }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getApplicantList(postId: number) {
+    try {
+      const jobpost = await this.jobpostRepository.findOne({ id: postId });
+      const experience = await this.expRepository.find({ jobpost });
+      return experience;
     } catch (err) {
       throw err;
     }

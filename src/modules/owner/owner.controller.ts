@@ -51,4 +51,9 @@ export class OwnerController {
   deletePost(@Param('postId') postId: number) {
     return this.ownerService.deletePost(postId);
   }
+
+  @Get('post/applicantList/:postId')
+  getApplicantList(@Param('postId') postId: number) {
+    return this.ownerService.getApplicantList(postId);
+  }
 }

@@ -30,11 +30,11 @@ export class Experience {
   @JoinColumn({ name: 'storeId' })
   store: Store;
 
-  @ManyToOne(() => User, (user) => user.experienceId)
+  @ManyToOne(() => User, (user) => user.experienceId, { eager: true })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @ManyToOne(() => Jobpost, (post) => post.experienceId)
+  @ManyToOne(() => Jobpost, (jobpost) => jobpost.experienceId)
   @JoinColumn({ name: 'postId' })
   jobpost: Jobpost;
 }
