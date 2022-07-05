@@ -7,6 +7,7 @@ import * as Bcrypt from 'bcrypt';
 import { Store } from 'src/entities/store.entity';
 import { Experience } from 'src/entities/experience.entity';
 import { ApplyJobDTO } from './dto/applyJob.dto';
+import { Jobpost } from 'src/entities/jobpost.entity';
 
 @Injectable()
 export class UserService {
@@ -19,10 +20,14 @@ export class UserService {
 
     @InjectRepository(Experience)
     private expRepository: Repository<Experience>,
+
+    @InjectRepository(Jobpost)
+    private jobpostRepository: Repository<Jobpost>,
   ) {
     this.userRepository = userRepository;
     this.storeRepository = storeRepository;
     this.expRepository = expRepository;
+    this.jobpostRepository = jobpostRepository;
   }
 
   async getByUserId(userId: string): Promise<User> {
@@ -55,18 +60,26 @@ export class UserService {
     }
   }
 
-  async applyJob(applyJobDto: ApplyJobDTO) {
+  async applyJob(postId: number, applyJobDto: ApplyJobDTO) {
     try {
       const { userId, storeId } = applyJobDto;
 
-      const store = await this.storeRepository.findOne({ id: storeId });
       const user = await this.userRepository.findOne({ userId });
+      const experience = await this.expRepository.findOne({ user });
 
-      if (store !== null && user !== null) {
+      if (experience) {
+        return '이미 신청한 공고입니다.';
+      }
+
+      const store = await this.storeRepository.findOne({ id: storeId });
+      const jobpost = await this.jobpostRepository.findOne({ id: postId });
+
+      if (store && user) {
         this.expRepository.save({
           result: 2,
           store,
           user,
+          jobpost,
         });
       }
     } catch (err) {
