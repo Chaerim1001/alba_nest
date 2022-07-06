@@ -65,14 +65,14 @@ export class UserService {
       const { userId, storeId } = applyJobDto;
 
       const user = await this.userRepository.findOne({ userId });
-      const experience = await this.expRepository.findOne({ user });
+      const jobpost = await this.jobpostRepository.findOne({ id: postId });
+      const experience = await this.expRepository.findOne({ user, jobpost });
 
       if (experience) {
         return '이미 신청한 공고입니다.';
       }
 
       const store = await this.storeRepository.findOne({ id: storeId });
-      const jobpost = await this.jobpostRepository.findOne({ id: postId });
 
       if (store && user) {
         this.expRepository.save({
@@ -82,6 +82,16 @@ export class UserService {
           jobpost,
         });
       }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getApplyList(userId: string) {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+      const applyList = await this.expRepository.find({ user });
+      return applyList;
     } catch (err) {
       throw err;
     }
