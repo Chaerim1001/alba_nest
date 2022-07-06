@@ -87,6 +87,19 @@ export class UserService {
     }
   }
 
+  async deleteApplication(userId: string, postId: number) {
+    try {
+      const jobpost = await this.jobpostRepository.findOne({ id: postId });
+      const user = await this.userRepository.findOne({ userId });
+      const application = await this.expRepository.findOne({ jobpost, user });
+      if (application) {
+        await this.expRepository.delete(application);
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getApplyList(userId: string) {
     try {
       const user = await this.userRepository.findOne({ userId });
