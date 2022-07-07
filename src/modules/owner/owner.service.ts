@@ -10,6 +10,7 @@ import { CreatePostDTO } from './dto/createPost.dto';
 import { Jobpost } from 'src/entities/jobpost.entity';
 import { UpdatePostDTO } from './dto/updatePost.dto';
 import { Experience } from 'src/entities/experience.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class OwnerService {
@@ -25,10 +26,14 @@ export class OwnerService {
 
     @InjectRepository(Experience)
     private expRepository: Repository<Experience>,
+
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {
     this.ownerRepository = ownerRepository;
     this.storeRepository = storeRepository;
     this.jobpostRepository = jobpostRepository;
+    this.userRepository = userRepository;
     this.expRepository = expRepository;
   }
 
@@ -150,6 +155,17 @@ export class OwnerService {
       const jobpost = await this.jobpostRepository.findOne({ id: postId });
       const experience = await this.expRepository.find({ jobpost });
       return experience;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async checkApplicant(postId: number, userId: string, check: number) {
+    try {
+      const jobpost = await this.jobpostRepository.findOne({ id: postId });
+      const user = await this.userRepository.findOne({ userId });
+      const application = await this.expRepository.findOne({ jobpost, user });
+      this.expRepository.update(application, { result: check });
     } catch (err) {
       throw err;
     }

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { OwnerService } from './owner.service';
 import { RegisterStoreDTO } from './dto/registerStore.dto';
@@ -55,5 +56,14 @@ export class OwnerController {
   @Get('post/applicantList/:postId')
   getApplicantList(@Param('postId') postId: number) {
     return this.ownerService.getApplicantList(postId);
+  }
+
+  @Patch('post/check/:postId/:userId')
+  checkApplicant(
+    @Param('postId') postId: number,
+    @Param('userId') userId: string,
+    @Query('check') check: number,
+  ) {
+    return this.ownerService.checkApplicant(postId, userId, check);
   }
 }
