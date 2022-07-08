@@ -11,6 +11,7 @@ import { Jobpost } from './entities/jobpost.entity';
 import { OwnerModule } from './modules/owner/owner.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
+import { ApplicationDocuments } from './entities/applicationdocuments.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { UserModule } from './modules/user/user.module';
       database: process.env.DB_NAME,
       synchronize: false,
       logging: true,
-      entities: [Owner, Store, Experience, Jobpost, User],
+      entities: [Owner, Store, Experience, Jobpost, User, ApplicationDocuments],
       autoLoadEntities: true,
     }),
     OwnerModule,

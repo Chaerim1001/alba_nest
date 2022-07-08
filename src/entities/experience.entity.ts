@@ -8,6 +8,7 @@ import {
 import { Jobpost } from './jobpost.entity';
 import { Store } from './store.entity';
 import { User } from './user.entity';
+import { ApplicationDocuments } from './applicationdocuments.entity';
 
 @Entity()
 export class Experience {
@@ -37,4 +38,10 @@ export class Experience {
   @ManyToOne(() => Jobpost, (jobpost) => jobpost.experienceId, { eager: true })
   @JoinColumn({ name: 'postId' })
   jobpost: Jobpost;
+
+  @ManyToOne(() => ApplicationDocuments, (doc) => doc.experienceId, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'docId' })
+  applicationDocuments: ApplicationDocuments;
 }
