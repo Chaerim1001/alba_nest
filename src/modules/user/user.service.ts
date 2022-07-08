@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -8,6 +8,9 @@ import { Store } from 'src/entities/store.entity';
 import { Experience } from 'src/entities/experience.entity';
 import { ApplyJobDTO } from './dto/applyJob.dto';
 import { Jobpost } from 'src/entities/jobpost.entity';
+import { ApplicationDocuments } from '../../entities/applicationdocuments.entity';
+import { CreateDocumentsDTO } from './dto/createDocuments.dto';
+import e from 'express';
 
 @Injectable()
 export class UserService {
@@ -23,11 +26,15 @@ export class UserService {
 
     @InjectRepository(Jobpost)
     private jobpostRepository: Repository<Jobpost>,
+
+    @InjectRepository(ApplicationDocuments)
+    private applicationDocumentsRepository: Repository<ApplicationDocuments>,
   ) {
     this.userRepository = userRepository;
     this.storeRepository = storeRepository;
     this.expRepository = expRepository;
     this.jobpostRepository = jobpostRepository;
+    this.applicationDocumentsRepository = applicationDocumentsRepository;
   }
 
   async getByUserId(userId: string): Promise<User> {
@@ -105,6 +112,35 @@ export class UserService {
       const user = await this.userRepository.findOne({ userId });
       const applyList = await this.expRepository.find({ user });
       return applyList;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async createApplicationDocuments(
+    userId: string,
+    createDocumentsDto: CreateDocumentsDTO,
+  ) {
+    try {
+      const { title, content } = createDocumentsDto;
+
+      const user = await this.userRepository.findOne({ userId });
+      if (user) {
+        const applicationDocuments =
+          await this.applicationDocumentsRepository.findOne({ user });
+
+        if (applicationDocuments) {
+          throw new NotAcceptableException('already create documents');
+        }
+
+        this.applicationDocumentsRepository.save({
+          title,
+          content,
+          user,
+        });
+      } else {
+        throw new NotAcceptableException('not existed user');
+      }
     } catch (err) {
       throw err;
     }

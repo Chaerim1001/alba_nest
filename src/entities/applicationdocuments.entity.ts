@@ -15,10 +15,10 @@ export class ApplicationDocuments {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   title: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   content: string;
 
   @Column({ default: () => 'NOW()' })

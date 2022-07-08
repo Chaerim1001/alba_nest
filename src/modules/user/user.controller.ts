@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Param, Get, Delete } from '@nestjs/common';
 import { ApplyJobDTO } from './dto/applyJob.dto';
 import { UserService } from './user.service';
+import { CreateDocumentsDTO } from './dto/createDocuments.dto';
 
 @Controller('user')
 export class UserController {
@@ -22,5 +23,16 @@ export class UserController {
   @Get('applyList/:userId')
   getApplyList(@Param('userId') userId: string) {
     return this.userService.getApplyList(userId);
+  }
+
+  @Post('documents/:userId')
+  createApplicationDocuments(
+    @Param('userId') userId: string,
+    @Body() createDocumentsDto: CreateDocumentsDTO,
+  ) {
+    return this.userService.createApplicationDocuments(
+      userId,
+      createDocumentsDto,
+    );
   }
 }

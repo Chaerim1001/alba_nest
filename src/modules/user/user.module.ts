@@ -6,9 +6,18 @@ import { Store } from 'src/entities/store.entity';
 import { User } from 'src/entities/user.entity';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { ApplicationDocuments } from '../../entities/applicationdocuments.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Store, Experience, Jobpost])],
+  imports: [
+    TypeOrmModule.forFeature([
+      User,
+      Store,
+      Experience,
+      Jobpost,
+      ApplicationDocuments,
+    ]),
+  ],
   exports: [TypeOrmModule],
   controllers: [UserController],
   providers: [UserService],
