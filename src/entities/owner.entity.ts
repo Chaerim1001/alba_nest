@@ -30,7 +30,7 @@ export class Owner {
   @Column({ default: () => 'NOW()' })
   createdAt: Date;
 
-  @OneToOne(() => Store)
+  @OneToOne(() => Store, { eager: true })
   @JoinColumn({ name: 'storeId' })
   store: Store;
 }

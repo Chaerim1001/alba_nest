@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Owner } from 'src/entities/owner.entity';
 import { Repository } from 'typeorm';
@@ -69,19 +69,19 @@ export class OwnerService {
   async registerStore(registerStoreDto: RegisterStoreDTO) {
     try {
       const { storeName, storeNumber, startDate, ownerId } = registerStoreDto;
-      const newStore = await this.storeRepository.save({
-        storeName,
-        storeNumber,
-        startDate,
-      });
 
-      try {
-        const owner = await this.ownerRepository.findOne(ownerId);
+      const owner = await this.ownerRepository.findOne({ id: ownerId });
 
+      if (owner.store !== null) {
+        throw new NotAcceptableException('already register store');
+      } else {
+        const newStore = await this.storeRepository.save({
+          storeName,
+          storeNumber,
+          startDate,
+        });
         owner.store = newStore;
         this.ownerRepository.save(owner);
-      } catch (err) {
-        throw err;
       }
     } catch (err) {
       console.log(err);
