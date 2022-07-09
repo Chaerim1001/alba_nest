@@ -1,7 +1,16 @@
-import { Controller, Post, Body, Param, Get, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Get,
+  Delete,
+  Patch,
+} from '@nestjs/common';
 import { ApplyJobDTO } from './dto/applyJob.dto';
 import { UserService } from './user.service';
 import { CreateDocumentsDTO } from './dto/createDocuments.dto';
+import { UpdateDocumentsDTO } from './dto/updateDocuments.dto';
 
 @Controller('user')
 export class UserController {
@@ -33,6 +42,17 @@ export class UserController {
     return this.userService.createApplicationDocuments(
       userId,
       createDocumentsDto,
+    );
+  }
+
+  @Patch('documents/:userId')
+  updateApplicationDocuments(
+    @Param('userId') userId: string,
+    @Body() updateDocumentsDto: UpdateDocumentsDTO,
+  ) {
+    return this.userService.updateApplicationDocuments(
+      userId,
+      updateDocumentsDto,
     );
   }
 }

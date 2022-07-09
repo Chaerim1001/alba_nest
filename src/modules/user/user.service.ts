@@ -11,6 +11,7 @@ import { Jobpost } from 'src/entities/jobpost.entity';
 import { ApplicationDocuments } from '../../entities/applicationdocuments.entity';
 import { CreateDocumentsDTO } from './dto/createDocuments.dto';
 import e from 'express';
+import { UpdateDocumentsDTO } from './dto/updateDocuments.dto';
 
 @Injectable()
 export class UserService {
@@ -137,6 +138,33 @@ export class UserService {
           title,
           content,
           user,
+        });
+      } else {
+        throw new NotAcceptableException('not existed user');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateApplicationDocuments(
+    userId: string,
+    updateDocumentsDto: UpdateDocumentsDTO,
+  ) {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+
+      if (user) {
+        const applicationDocuments =
+          await this.applicationDocumentsRepository.findOne({ user });
+
+        if (!applicationDocuments) {
+          throw new NotAcceptableException('not existed applicationDocuments');
+        }
+
+        this.applicationDocumentsRepository.update(applicationDocuments, {
+          updatedAt: new Date(),
+          ...updateDocumentsDto,
         });
       } else {
         throw new NotAcceptableException('not existed user');
