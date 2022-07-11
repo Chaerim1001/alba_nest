@@ -66,4 +66,12 @@ export class OwnerController {
   ) {
     return this.ownerService.checkApplicant(postId, userId, check);
   }
+
+  @Get('post/applicant/:postId/:userId')
+  getApplicationDocuments(
+    @Param('postId') postId: number,
+    @Param('userId') userId: string,
+  ) {
+    return this.ownerService.getApplicationDocuments(postId, userId);
+  }
 }

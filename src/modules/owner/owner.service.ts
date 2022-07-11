@@ -11,6 +11,7 @@ import { Jobpost } from 'src/entities/jobpost.entity';
 import { UpdatePostDTO } from './dto/updatePost.dto';
 import { Experience } from 'src/entities/experience.entity';
 import { User } from 'src/entities/user.entity';
+import { ApplicationDocuments } from '../../entities/applicationdocuments.entity';
 
 @Injectable()
 export class OwnerService {
@@ -29,12 +30,16 @@ export class OwnerService {
 
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
+    @InjectRepository(ApplicationDocuments)
+    private applicationDocumentsRepository: Repository<ApplicationDocuments>,
   ) {
     this.ownerRepository = ownerRepository;
     this.storeRepository = storeRepository;
     this.jobpostRepository = jobpostRepository;
     this.userRepository = userRepository;
     this.expRepository = expRepository;
+    this.applicationDocumentsRepository = applicationDocumentsRepository;
   }
 
   async createOwner(createOwnerDto: CreateOwnerDTO): Promise<void> {
@@ -166,6 +171,21 @@ export class OwnerService {
       const user = await this.userRepository.findOne({ userId });
       const application = await this.expRepository.findOne({ jobpost, user });
       this.expRepository.update(application, { result: check });
+    } catch (err) {
+      throw err;
+    }
+  }
+  async getApplicationDocuments(postId, userId) {
+    try {
+      const jobpost = await this.jobpostRepository.findOne({ id: postId });
+      const user = await this.userRepository.findOne({ userId });
+      const experience = await this.expRepository.findOne({ jobpost, user });
+      if (experience) {
+        const doc = await this.applicationDocumentsRepository.findOne({
+          user,
+        });
+        return doc;
+      }
     } catch (err) {
       throw err;
     }

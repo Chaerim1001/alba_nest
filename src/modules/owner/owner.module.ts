@@ -7,10 +7,18 @@ import { Store } from 'src/entities/store.entity';
 import { Jobpost } from 'src/entities/jobpost.entity';
 import { Experience } from '../../entities/experience.entity';
 import { User } from 'src/entities/user.entity';
+import { ApplicationDocuments } from '../../entities/applicationdocuments.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Owner, Store, Jobpost, Experience, User]),
+    TypeOrmModule.forFeature([
+      Owner,
+      Store,
+      Jobpost,
+      Experience,
+      User,
+      ApplicationDocuments,
+    ]),
   ],
   exports: [TypeOrmModule],
   controllers: [OwnerController],
