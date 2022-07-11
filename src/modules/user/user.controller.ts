@@ -34,6 +34,11 @@ export class UserController {
     return this.userService.getApplyList(userId);
   }
 
+  @Get('documents/:userId')
+  getApplicationDocuments(@Param('userId') userId: string) {
+    return this.userService.getApplicationDocuments(userId);
+  }
+
   @Post('documents/:userId')
   createApplicationDocuments(
     @Param('userId') userId: string,

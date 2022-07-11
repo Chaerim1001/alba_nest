@@ -173,4 +173,24 @@ export class UserService {
       throw err;
     }
   }
+
+  async getApplicationDocuments(userId: string) {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+
+      if (user) {
+        const applicationDocuments =
+          await this.applicationDocumentsRepository.findOne({ user });
+        if (applicationDocuments) {
+          return applicationDocuments;
+        } else {
+          throw new NotAcceptableException('not existed applicationDocuments');
+        }
+      } else {
+        throw new NotAcceptableException('not existed user');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }
