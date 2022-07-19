@@ -14,6 +14,7 @@ import e from 'express';
 import { UpdateDocumentsDTO } from './dto/updateDocuments.dto';
 import { CreateScheduleDTO } from './dto/createSchedule.dto';
 import { Schedule } from '../../entities/schedule.entity';
+import { UpdateScheduleDTO } from './dto/updateSchedule.dto';
 
 @Injectable()
 export class UserService {
@@ -207,6 +208,35 @@ export class UserService {
         this.scheduleRepository.save({
           createScheduleDto,
           user,
+        });
+      } else {
+        throw new NotAcceptableException('not existed user');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateSchedule(
+    scheduleId: number,
+    userId: string,
+    updateScheduleDto: UpdateScheduleDTO,
+  ) {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+
+      if (user) {
+        const schedule = await this.scheduleRepository.findOne({
+          id: scheduleId,
+          user,
+        });
+
+        if (!schedule) {
+          throw new NotAcceptableException('not existed schedule');
+        }
+
+        this.scheduleRepository.update(schedule, {
+          ...updateScheduleDto,
         });
       } else {
         throw new NotAcceptableException('not existed user');

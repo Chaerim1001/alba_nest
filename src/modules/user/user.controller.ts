@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 import { CreateDocumentsDTO } from './dto/createDocuments.dto';
 import { UpdateDocumentsDTO } from './dto/updateDocuments.dto';
 import { CreateScheduleDTO } from './dto/createSchedule.dto';
+import { UpdateScheduleDTO } from './dto/updateSchedule.dto';
 
 @Controller('user')
 export class UserController {
@@ -62,11 +63,25 @@ export class UserController {
     );
   }
 
-  @Post('schedule')
+  @Post('schedule/:userId')
   createSchedule(
     @Param('userId') userId: string,
     @Body() createScheduleDTO: CreateScheduleDTO,
   ) {
     return this.userService.createSchedule(userId, createScheduleDTO);
+  }
+
+  @Patch('schedule/:scheduleId/:userId')
+  updateSchedule(
+    @Param('scheduleId') scheduleId: number,
+    @Param('userId') userId: string,
+    @Body()
+    updateScheduleDTO: UpdateScheduleDTO,
+  ) {
+    return this.userService.updateSchedule(
+      scheduleId,
+      userId,
+      updateScheduleDTO,
+    );
   }
 }
