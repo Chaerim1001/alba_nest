@@ -245,4 +245,24 @@ export class UserService {
       throw err;
     }
   }
+
+  async deleteSchedule(scheduleId: number, userId: string) {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+
+      if (user) {
+        const schedule = await this.scheduleRepository.findOne({
+          id: scheduleId,
+          user,
+        });
+
+        if (!schedule) {
+          throw new NotAcceptableException('not existed schedule');
+        }
+        await this.scheduleRepository.delete(schedule);
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }

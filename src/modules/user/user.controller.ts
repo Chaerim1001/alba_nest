@@ -84,4 +84,12 @@ export class UserController {
       updateScheduleDTO,
     );
   }
+
+  @Delete('schedule/:scheduleId/:userId')
+  deleteSchedule(
+    @Param('scheduleId') scheduleId: number,
+    @Param('userId') userId: string,
+  ) {
+    return this.userService.deleteSchedule(scheduleId, userId);
+  }
 }
