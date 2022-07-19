@@ -63,6 +63,11 @@ export class UserController {
     );
   }
 
+  @Get('schedule/:userId')
+  getAllSchedule(@Param('userId') userId: string) {
+    return this.userService.getAllSchedule(userId);
+  }
+
   @Post('schedule/:userId')
   createSchedule(
     @Param('userId') userId: string,

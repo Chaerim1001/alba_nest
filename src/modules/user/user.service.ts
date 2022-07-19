@@ -217,6 +217,20 @@ export class UserService {
     }
   }
 
+  async getAllSchedule(userId: string) {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+      if (user) {
+        const scheduleList = await this.scheduleRepository.find({ user });
+        return scheduleList;
+      } else {
+        throw new NotAcceptableException('not existed user');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async updateSchedule(
     scheduleId: number,
     userId: string,
