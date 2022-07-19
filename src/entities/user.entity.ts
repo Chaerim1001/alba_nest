@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Experience } from './experience.entity';
+import { Schedule } from './schedule.entity';
 
 @Entity()
 export class User {
@@ -29,4 +30,7 @@ export class User {
 
   @OneToMany(() => Experience, (experience) => experience.id)
   experienceId: Experience[];
+
+  @OneToMany(() => Schedule, (schedule) => schedule.id)
+  scheduleId: Schedule[];
 }
