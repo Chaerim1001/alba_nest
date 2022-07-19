@@ -68,6 +68,14 @@ export class UserController {
     return this.userService.getAllSchedule(userId);
   }
 
+  @Get('schedule/:scheduleId/:userId')
+  getSchedule(
+    @Param('scheduleId') scheduleId: number,
+    @Param('userId') userId: string,
+  ) {
+    return this.userService.getSchedule(scheduleId, userId);
+  }
+
   @Post('schedule/:userId')
   createSchedule(
     @Param('userId') userId: string,
