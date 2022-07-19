@@ -11,6 +11,7 @@ import { ApplyJobDTO } from './dto/applyJob.dto';
 import { UserService } from './user.service';
 import { CreateDocumentsDTO } from './dto/createDocuments.dto';
 import { UpdateDocumentsDTO } from './dto/updateDocuments.dto';
+import { CreateScheduleDTO } from './dto/createSchedule.dto';
 
 @Controller('user')
 export class UserController {
@@ -59,5 +60,13 @@ export class UserController {
       userId,
       updateDocumentsDto,
     );
+  }
+
+  @Post('schedule')
+  createSchedule(
+    @Param('userId') userId: string,
+    @Body() createScheduleDTO: CreateScheduleDTO,
+  ) {
+    return this.userService.createSchedule(userId, createScheduleDTO);
   }
 }

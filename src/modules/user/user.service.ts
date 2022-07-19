@@ -12,6 +12,8 @@ import { ApplicationDocuments } from '../../entities/applicationdocuments.entity
 import { CreateDocumentsDTO } from './dto/createDocuments.dto';
 import e from 'express';
 import { UpdateDocumentsDTO } from './dto/updateDocuments.dto';
+import { CreateScheduleDTO } from './dto/createSchedule.dto';
+import { Schedule } from '../../entities/schedule.entity';
 
 @Injectable()
 export class UserService {
@@ -30,12 +32,16 @@ export class UserService {
 
     @InjectRepository(ApplicationDocuments)
     private applicationDocumentsRepository: Repository<ApplicationDocuments>,
+
+    @InjectRepository(Schedule)
+    private scheduleRepository: Repository<Schedule>,
   ) {
     this.userRepository = userRepository;
     this.storeRepository = storeRepository;
     this.expRepository = expRepository;
     this.jobpostRepository = jobpostRepository;
     this.applicationDocumentsRepository = applicationDocumentsRepository;
+    this.scheduleRepository = scheduleRepository;
   }
 
   async getByUserId(userId: string): Promise<User> {
@@ -186,6 +192,22 @@ export class UserService {
         } else {
           throw new NotAcceptableException('not existed applicationDocuments');
         }
+      } else {
+        throw new NotAcceptableException('not existed user');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async createSchedule(userId: string, createScheduleDto: CreateScheduleDTO) {
+    try {
+      const user = await this.userRepository.findOne({ userId });
+      if (user) {
+        this.scheduleRepository.save({
+          createScheduleDto,
+          user,
+        });
       } else {
         throw new NotAcceptableException('not existed user');
       }
