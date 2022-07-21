@@ -74,4 +74,9 @@ export class OwnerController {
   ) {
     return this.ownerService.getApplicationDocuments(postId, userId);
   }
+
+  @Get('schedule/:ownerId') // 아르바이트생 일정 가져오기
+  getAllSchedule(@Param('ownerId') ownerId: number) {
+    return this.ownerService.getAllSchedule(ownerId);
+  }
 }

@@ -12,6 +12,7 @@ import { UpdatePostDTO } from './dto/updatePost.dto';
 import { Experience } from 'src/entities/experience.entity';
 import { User } from 'src/entities/user.entity';
 import { ApplicationDocuments } from '../../entities/applicationdocuments.entity';
+import { Schedule } from '../../entities/schedule.entity';
 
 @Injectable()
 export class OwnerService {
@@ -33,6 +34,9 @@ export class OwnerService {
 
     @InjectRepository(ApplicationDocuments)
     private applicationDocumentsRepository: Repository<ApplicationDocuments>,
+
+    @InjectRepository(Schedule)
+    private scheduleRepository: Repository<Schedule>,
   ) {
     this.ownerRepository = ownerRepository;
     this.storeRepository = storeRepository;
@@ -40,6 +44,7 @@ export class OwnerService {
     this.userRepository = userRepository;
     this.expRepository = expRepository;
     this.applicationDocumentsRepository = applicationDocumentsRepository;
+    this.scheduleRepository = scheduleRepository;
   }
 
   async createOwner(createOwnerDto: CreateOwnerDTO): Promise<void> {
@@ -175,6 +180,7 @@ export class OwnerService {
       throw err;
     }
   }
+
   async getApplicationDocuments(postId, userId) {
     try {
       const jobpost = await this.jobpostRepository.findOne({ id: postId });
@@ -185,6 +191,30 @@ export class OwnerService {
           user,
         });
         return doc;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getAllSchedule(ownerId: number) {
+    try {
+      const owner = await this.ownerRepository.findOne({ id: ownerId });
+      if (owner) {
+        const allExperience = await this.expRepository.find({
+          store: owner.store,
+          ongoing: true,
+        });
+
+        const allUser = allExperience.map((v) => v.user);
+
+        const schedule = allUser.map(
+          async (v) => await this.scheduleRepository.find({ user: v }),
+        );
+
+        return schedule;
+      } else {
+        throw new NotAcceptableException('not existed owner');
       }
     } catch (err) {
       throw err;
